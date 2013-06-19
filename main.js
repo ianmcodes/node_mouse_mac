@@ -12,9 +12,14 @@ function mouseMoveABS(x,y) {
 	objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake(x, y));
 }
 
+function showMouse() {
+	objc.CGDisplayShowCursor(objc.CGMainDisplayID());
+}
+
 module.exports = {
-    "mouseMoveDelta": mouseMoveDelta,
-    "mouseMoveABS": mouseMoveABS,
-    "mouseDown": function(){},
-    "mouseUp": function(){}
+    "moveDelta": mouseMoveDelta,
+    "moveABS": mouseMoveABS,
+    "buttonDown": function(){},
+    "buttonUp": function(){},
+    "show": showMouse
 }

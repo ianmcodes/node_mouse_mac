@@ -5,5 +5,7 @@
   "dependencies": {
     "NodObjC": "0.0.15"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "ignore": ".git .gitignore",
+  "main": "./main.js"
 }

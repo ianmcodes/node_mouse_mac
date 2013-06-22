@@ -8,13 +8,16 @@ var evtSrc = objc.CGEventSourceCreate(objc.kCGEventSourceStateHIDSystemState);
 function mouseMoveDelta(dx,dy) {
 	// get the current location of the mouse
 	var pt = objc.NSEvent('mouseLocation');
-	var evt = objc.CGCreateMouseEvent(evtSrc, objc.kCGEventMouseMoved, objc.CGPointMake((pt.x + dx), (pt.y + dy)));
-	objc.CFRelease(evt);
+	var evt = objc.CGEventCreateMouseEvent(evtSrc, objc.kCGEventMouseMoved, objc.CGPointMake((pt.x + dx), (pt.y + dy)),objc.kCGMouseButtonLeft);
+	//objc.CFRelease(evt);
 	//objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake((pt.x + dx), (pt.y + dy)));
 }
 
 function mouseMoveABS(x,y) {
-	objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake(x, y));
+	debugger;
+	var evt = objc.CGEventCreateMouseEvent(evtSrc, objc.kCGEventMouseMoved, objc.CGPointMake(x, y),objc.kCGMouseButtonLeft);
+	//objc.CFRelease(evt);
+	//objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake(x, y));
 }
 
 function showMouse() {

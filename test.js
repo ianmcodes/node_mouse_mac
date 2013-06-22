@@ -1,4 +1,4 @@
-var mouse = require('node_mouse_mac');
+var mouse = require('./main');
 
 mouse.moveABS(50,50);
 mouse.show();

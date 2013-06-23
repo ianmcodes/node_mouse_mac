@@ -2,6 +2,7 @@ var mouse = require('./main');
 
 mouse.moveABS(50,50);
 mouse.show();
+mouse.buttonDown();
 console.log("should be: 50,50");
 var pt = mouse.getCurrentPosition();
 console.log("is: " + pt.x + "," + pt.y);
@@ -30,6 +31,7 @@ setTimeout(function() {
 				mouse.moveDelta(0,-50);
 				//mouse.moveABS(50,50);
 				mouse.show();
+				mouse.buttonUp();
 				console.log("should be: 50,50");
 				pt = mouse.getCurrentPosition();
 				console.log("is: " + pt.x + "," + pt.y);

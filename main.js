@@ -1,11 +1,11 @@
 var objc = require('NodObjC');
     objc.import('CoreGraphics');
-	objc.import('ApplicationServices');
     objc.import('AppKit');
 
 var scr = objc.CGDisplayBounds(objc.CGMainDisplayID());
 var height = scr.size.height;
 var evtSource = objc.CGEventSourceCreate(objc.kCGEventSourceStateHIDSystemState);
+objc.NSAutoreleasePool('alloc')('init')
 
 function mouseMoveDelta(dx,dy) {
 	// get the current location of the mouse
@@ -20,12 +20,16 @@ function mouseMoveDelta(dx,dy) {
 
 function mouseMoveABS(x,y) {
 	var evt = objc.CGEventCreateMouseEvent(
-		null, //evtSource, 
+		evtSource, //evtSource, 
 		objc.kCGEventMouseMoved, 
 		objc.CGPointMake(x, y),
 		objc.kCGMouseButtonLeft
 	);
-	objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	try {
+		objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	} catch(e) {
+		console.log(e);
+	}
 	//objc.CFRelease(evt);
 	//objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake(x, y));
 }
@@ -48,7 +52,11 @@ function mouseBtnDown() {
 		objc.CGPointMake(pt.x,pt.y), // cursor position
 		objc.kCGMouseButtonLeft
 	);
-	objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	try {
+		objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	} catch(e) {
+		console.log(e);
+	}
 }
 
 function mouseBtnUp() {
@@ -60,7 +68,26 @@ function mouseBtnUp() {
 		objc.CGPointMake(pt.x,pt.y), // cursor position
 		objc.kCGMouseButtonLeft
 	);
-	objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	try {
+		objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	} catch(e) {
+		console.log(e);
+	}
+}
+
+function mouseWheel(distance, unit) {
+	unit = (isNaN(unit) || unit === null || unit < 0 || unit > 1) ? objc.kCGScrollEventUnitPixel : unit;
+	var evt = objc.CGEventCreateScrollWheelEvent(
+		evtSource,
+		unit,
+		1,
+		distance
+	);
+	try {
+		objc.CGEventPost(objc.kCGHIDEventTap, evt);
+	} catch(e) {
+		console.log(e);
+	}
 }
 
 module.exports = {

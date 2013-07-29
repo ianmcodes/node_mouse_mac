@@ -1,20 +1,25 @@
+/*
+ * https://developer.apple.com/library/mac/#documentation/Carbon/Reference/QuartzEventServicesRef/Reference/reference.html
+ */
 var objc = require('NodObjC');
     objc.import('CoreGraphics');
     objc.import('AppKit');
+    //objc.import('CoreFoundation'); // ??
+var util = require('util');
 
+var pool = objc.NSAutoreleasePool('alloc')('init');
 var scr = objc.CGDisplayBounds(objc.CGMainDisplayID());
 var height = scr.size.height;
+delete scr;
 var evtSource = objc.CGEventSourceCreate(objc.kCGEventSourceStateHIDSystemState);
-objc.NSAutoreleasePool('alloc')('init')
-
 function mouseMoveDelta(dx,dy) {
 	// get the current location of the mouse
 	var pt = getCurrentPosition();
 	var x = pt.x + dx;
 	var y = pt.y + dy;
 	mouseMoveABS(x,y);
+	
 	//var evt = objc.CGEventCreateMouseEvent(evtSrc, objc.kCGEventMouseMoved, objc.CGPointMake((pt.x + dx), (pt.y + dy)),objc.kCGMouseButtonLeft);
-	//objc.CFRelease(evt);
 	//objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake((pt.x + dx), (pt.y + dy)));
 }
 
@@ -26,11 +31,11 @@ function mouseMoveABS(x,y) {
 		objc.kCGMouseButtonLeft
 	);
 	try {
-		objc.CGEventPost(objc.kCGHIDEventTap, evt);
+		objc.CGEventPost(objc.kCGSessionEventTap, evt); // kCGSessionEventTap?
 	} catch(e) {
 		console.log(e);
 	}
-	//objc.CFRelease(evt);
+	pool('drain');
 	//objc.CGDisplayMoveCursorToPoint(objc.CGMainDisplayID(),objc.CGPointMake(x, y));
 }
 
@@ -57,6 +62,7 @@ function mouseBtnDown() {
 	} catch(e) {
 		console.log(e);
 	}
+	pool('drain');
 }
 
 function mouseBtnUp() {
@@ -73,6 +79,7 @@ function mouseBtnUp() {
 	} catch(e) {
 		console.log(e);
 	}
+	pool('drain');
 }
 
 function mouseWheel(distance, unit) {
@@ -88,6 +95,7 @@ function mouseWheel(distance, unit) {
 	} catch(e) {
 		console.log(e);
 	}
+	pool('drain');
 }
 
 module.exports = {

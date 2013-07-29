@@ -1,8 +1,8 @@
 var mouse = require('./main');
 
 mouse.moveABS(50,50);
-mouse.show();
 console.log("should be: 50,50");
+mouse.show();
 var pt = mouse.getCurrentPosition();
 console.log("is: " + pt.x + "," + pt.y);
 setTimeout(function() {

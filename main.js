@@ -10,6 +10,7 @@ var util = require('util');
 var pool = objc.NSAutoreleasePool('alloc')('init');
 var scr = objc.CGDisplayBounds(objc.CGMainDisplayID());
 var height = scr.size.height;
+var width = scr.size.width;
 delete scr;
 var evtSource = objc.CGEventSourceCreate(objc.kCGEventSourceStateHIDSystemState);
 function mouseMoveDelta(dx,dy) {
@@ -24,6 +25,16 @@ function mouseMoveDelta(dx,dy) {
 }
 
 function mouseMoveABS(x,y) {
+	// location sanity check
+	if (x < 0)
+		x = 0;
+	if (x > width)
+		x = width;
+	if (y < 0) 
+		y = 0;
+	if (y > height) 
+		y = height;
+	////////////////////////
 	var evt = objc.CGEventCreateMouseEvent(
 		evtSource, //evtSource, 
 		objc.kCGEventMouseMoved, 
@@ -41,6 +52,7 @@ function mouseMoveABS(x,y) {
 
 function showMouse() {
 	objc.CGDisplayShowCursor(objc.CGMainDisplayID());
+	pool('drain');
 }
 
 function getCurrentPosition() {
